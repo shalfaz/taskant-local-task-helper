@@ -32,8 +32,14 @@ export function ReportDialog({
   const [details, setDetails] = useState("");
 
   const submit = () => {
-    if (!currentUser) return toast.error("Please log in to submit a report.");
-    if (details.trim().length < 10) return toast.error("Please describe the issue (at least 10 characters).");
+    if (!currentUser) {
+      toast.error("Please log in to submit a report.");
+      return;
+    }
+    if (details.trim().length < 10) {
+      toast.error("Please describe the issue (at least 10 characters).");
+      return;
+    }
     submitReport({ targetType, targetId, category, details: details.trim() });
     toast.success("Report submitted. Our admin team will review it.");
     setDetails("");
