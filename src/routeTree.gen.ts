@@ -10,19 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BecomeAWorkerRouteImport } from './routes/become-a-worker'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as PostTaskRouteImport } from './routes/post-task'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
 import { Route as TasksIndexRouteImport } from './routes/tasks.index'
 import { Route as TasksTaskIdRouteImport } from './routes/tasks.$taskId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BecomeAWorkerRoute = BecomeAWorkerRouteImport.update({
+  id: '/become-a-worker',
+  path: '/become-a-worker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -33,6 +42,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -60,6 +74,16 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerificationRoute = VerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
+  id: '/profile/$userId',
+  path: '/profile/$userId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TasksIndexRoute = TasksIndexRouteImport.update({
   id: '/tasks/',
   path: '/tasks/',
@@ -73,38 +97,50 @@ const TasksTaskIdRoute = TasksTaskIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/become-a-worker': typeof BecomeAWorkerRoute
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/post-task': typeof PostTaskRoute
   '/register': typeof RegisterRoute
+  '/verification': typeof VerificationRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/tasks/$taskId': typeof TasksTaskIdRoute
   '/tasks/': typeof TasksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/become-a-worker': typeof BecomeAWorkerRoute
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/post-task': typeof PostTaskRoute
   '/register': typeof RegisterRoute
+  '/verification': typeof VerificationRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/tasks/$taskId': typeof TasksTaskIdRoute
   '/tasks': typeof TasksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/become-a-worker': typeof BecomeAWorkerRoute
   '/dashboard': typeof DashboardRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/post-task': typeof PostTaskRoute
   '/register': typeof RegisterRoute
+  '/verification': typeof VerificationRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/tasks/$taskId': typeof TasksTaskIdRoute
   '/tasks/': typeof TasksIndexRoute
 }
@@ -112,50 +148,66 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/become-a-worker'
     | '/dashboard'
     | '/forgot-password'
+    | '/how-it-works'
     | '/login'
     | '/messages'
     | '/notifications'
     | '/post-task'
     | '/register'
+    | '/verification'
+    | '/profile/$userId'
     | '/tasks/$taskId'
     | '/tasks/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/become-a-worker'
     | '/dashboard'
     | '/forgot-password'
+    | '/how-it-works'
     | '/login'
     | '/messages'
     | '/notifications'
     | '/post-task'
     | '/register'
+    | '/verification'
+    | '/profile/$userId'
     | '/tasks/$taskId'
     | '/tasks'
   id:
     | '__root__'
     | '/'
+    | '/become-a-worker'
     | '/dashboard'
     | '/forgot-password'
+    | '/how-it-works'
     | '/login'
     | '/messages'
     | '/notifications'
     | '/post-task'
     | '/register'
+    | '/verification'
+    | '/profile/$userId'
     | '/tasks/$taskId'
     | '/tasks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BecomeAWorkerRoute: typeof BecomeAWorkerRoute
   DashboardRoute: typeof DashboardRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  HowItWorksRoute: typeof HowItWorksRoute
   LoginRoute: typeof LoginRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   PostTaskRoute: typeof PostTaskRoute
   RegisterRoute: typeof RegisterRoute
+  VerificationRoute: typeof VerificationRoute
+  ProfileUserIdRoute: typeof ProfileUserIdRoute
   TasksTaskIdRoute: typeof TasksTaskIdRoute
   TasksIndexRoute: typeof TasksIndexRoute
 }
@@ -167,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/become-a-worker': {
+      id: '/become-a-worker'
+      path: '/become-a-worker'
+      fullPath: '/become-a-worker'
+      preLoaderRoute: typeof BecomeAWorkerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -181,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -218,6 +284,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/$userId': {
+      id: '/profile/$userId'
+      path: '/profile/$userId'
+      fullPath: '/profile/$userId'
+      preLoaderRoute: typeof ProfileUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tasks/': {
       id: '/tasks/'
       path: '/tasks'
@@ -237,13 +317,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BecomeAWorkerRoute: BecomeAWorkerRoute,
   DashboardRoute: DashboardRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  HowItWorksRoute: HowItWorksRoute,
   LoginRoute: LoginRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   PostTaskRoute: PostTaskRoute,
   RegisterRoute: RegisterRoute,
+  VerificationRoute: VerificationRoute,
+  ProfileUserIdRoute: ProfileUserIdRoute,
   TasksTaskIdRoute: TasksTaskIdRoute,
   TasksIndexRoute: TasksIndexRoute,
 }
