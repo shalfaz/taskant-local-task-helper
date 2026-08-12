@@ -532,7 +532,7 @@ function BidDialog({ taskId, budget, existing }: { taskId: string; budget: numbe
   );
 }
 
-function PaymentSummary({ amount, payment }: { amount: number; payment?: Payment }) {
+function PaymentSummary({ amount, payment }: { amount: number; payment?: Payment | undefined }) {
   const fee = payment?.serviceFee ?? Math.round(amount * SERVICE_FEE_RATE);
   return (
     <dl className="mt-3 space-y-1.5 text-sm">
