@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { TaskCard } from "@/components/TaskCard";
 import { EmptyState } from "@/components/RequireAuth";
@@ -22,9 +28,16 @@ export const Route = createFileRoute("/tasks/")({
   head: () => ({
     meta: [
       { title: "Browse Local Tasks — TaskAnt Marketplace" },
-      { name: "description", content: "Search and filter local tasks across Bangladesh by category, city, budget and deadline." },
+      {
+        name: "description",
+        content:
+          "Search and filter local tasks across Bangladesh by category, city, budget and deadline.",
+      },
       { property: "og:title", content: "Browse Local Tasks — TaskAnt Marketplace" },
-      { property: "og:description", content: "Find paid local errands and document tasks near you." },
+      {
+        property: "og:description",
+        content: "Find paid local errands and document tasks near you.",
+      },
     ],
   }),
   component: TasksPage,
@@ -67,30 +80,46 @@ function TasksPage() {
       <div className="space-y-2">
         <Label>Category</Label>
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="All categories">All categories</SelectItem>
-            {CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+            {CATEGORIES.map((c) => (
+              <SelectItem key={c} value={c}>
+                {c}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
       <div className="space-y-2">
         <Label>Location</Label>
         <Select value={city} onValueChange={setCity}>
-          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
           <SelectContent>
-            {ALL_CITIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+            {ALL_CITIES.map((c) => (
+              <SelectItem key={c} value={c}>
+                {c}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
       <div className="space-y-3">
-        <Label>Budget: ৳{budget[0]} – ৳{budget[1]}</Label>
+        <Label>
+          Budget: ৳{budget[0]} – ৳{budget[1]}
+        </Label>
         <Slider min={0} max={2000} step={50} value={budget} onValueChange={setBudget} />
       </div>
       <div className="space-y-2">
         <Label>Deadline within</Label>
         <Select value={deadline} onValueChange={setDeadline}>
-          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="any">Any time</SelectItem>
             <SelectItem value="2">2 days</SelectItem>
@@ -125,20 +154,27 @@ function TasksPage() {
           </p>
         </div>
         <Button asChild>
-          <Link to="/post-task"><PlusCircle /> Post a Task</Link>
+          <Link to="/post-task">
+            <PlusCircle /> Post a Task
+          </Link>
         </Button>
       </div>
 
       <div className="mt-7 grid gap-7 lg:grid-cols-[260px_1fr]">
         <aside className="card-surface hidden h-fit p-5 lg:block">
-          <p className="mb-4 flex items-center gap-2 font-semibold"><Filter size={16} /> Filters</p>
+          <p className="mb-4 flex items-center gap-2 font-semibold">
+            <Filter size={16} /> Filters
+          </p>
           {filters}
         </aside>
 
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <div className="relative min-w-[220px] flex-1">
-              <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <SearchIcon
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
@@ -147,7 +183,9 @@ function TasksPage() {
               />
             </div>
             <Select value={sort} onValueChange={setSort}>
-              <SelectTrigger className="w-[170px]"><SelectValue /></SelectTrigger>
+              <SelectTrigger className="w-[170px]">
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="newest">Newest first</SelectItem>
                 <SelectItem value="budget-high">Budget: high to low</SelectItem>
@@ -157,17 +195,23 @@ function TasksPage() {
             </Select>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="lg:hidden"><Filter size={16} /> Filters</Button>
+                <Button variant="outline" className="lg:hidden">
+                  <Filter size={16} /> Filters
+                </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] p-5">
-                <SheetHeader className="px-0"><SheetTitle>Filters</SheetTitle></SheetHeader>
+                <SheetHeader className="px-0">
+                  <SheetTitle>Filters</SheetTitle>
+                </SheetHeader>
                 {filters}
               </SheetContent>
             </Sheet>
           </div>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {results.map((t) => <TaskCard key={t.id} task={t} />)}
+            {results.map((t) => (
+              <TaskCard key={t.id} task={t} />
+            ))}
           </div>
 
           {results.length === 0 && (

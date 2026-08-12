@@ -12,10 +12,23 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useStore } from "@/lib/store";
 
-const CATEGORIES = ["Fraud", "Scam", "Fake Identity", "Inappropriate Content", "Payment Issue", "Other"];
+const CATEGORIES = [
+  "Fraud",
+  "Scam",
+  "Fake Identity",
+  "Inappropriate Content",
+  "Payment Issue",
+  "Other",
+];
 
 export function ReportDialog({
   targetType,
@@ -53,17 +66,22 @@ export function ReportDialog({
         <DialogHeader>
           <DialogTitle>Report {targetType}</DialogTitle>
           <DialogDescription>
-            Help keep TaskAnt safe. Reports are reviewed by the admin team and never shown to the reported user.
+            Help keep TaskAnt safe. Reports are reviewed by the admin team and never shown to the
+            reported user.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Report category</Label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 {CATEGORIES.map((c) => (
-                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -80,8 +98,12 @@ export function ReportDialog({
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button variant="destructive" onClick={submit}>Submit report</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={submit}>
+            Submit report
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

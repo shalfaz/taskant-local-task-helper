@@ -12,9 +12,15 @@ export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
       { title: "Login — TaskAnt" },
-      { name: "description", content: "Log in to your TaskAnt account to post tasks, bid and chat with local workers." },
+      {
+        name: "description",
+        content: "Log in to your TaskAnt account to post tasks, bid and chat with local workers.",
+      },
       { property: "og:title", content: "Login — TaskAnt" },
-      { property: "og:description", content: "Access your TaskAnt poster, worker or admin dashboard." },
+      {
+        property: "og:description",
+        content: "Access your TaskAnt poster, worker or admin dashboard.",
+      },
     ],
   }),
   component: LoginPage,
@@ -66,7 +72,13 @@ function LoginPage() {
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -97,7 +109,10 @@ function LoginPage() {
             )}
 
             <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-xs font-medium text-primary hover:underline">
+              <Link
+                to="/forgot-password"
+                className="text-xs font-medium text-primary hover:underline"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -108,7 +123,9 @@ function LoginPage() {
           </form>
 
           <div className="mt-6 rounded-xl border border-dashed p-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Demo accounts (password 123456)</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Demo accounts (password 123456)
+            </p>
             <div className="mt-3 grid gap-2">
               {DEMOS.map((d) => (
                 <button

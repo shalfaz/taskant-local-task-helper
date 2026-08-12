@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { AntLogo } from "@/components/AntLogo";
 import { useStore } from "@/lib/store";
@@ -17,9 +23,15 @@ export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
       { title: "Create your TaskAnt account" },
-      { name: "description", content: "Register on TaskAnt to post local tasks or earn money completing tasks near you." },
+      {
+        name: "description",
+        content: "Register on TaskAnt to post local tasks or earn money completing tasks near you.",
+      },
       { property: "og:title", content: "Create your TaskAnt account" },
-      { property: "og:description", content: "Join Bangladesh's on-demand local task marketplace." },
+      {
+        property: "og:description",
+        content: "Join Bangladesh's on-demand local task marketplace.",
+      },
     ],
   }),
   component: RegisterPage,
@@ -28,12 +40,17 @@ export const Route = createFileRoute("/register")({
 const schema = z.object({
   name: z.string().trim().min(3, "Full name must be at least 3 characters").max(60),
   email: z.string().trim().email("Enter a valid email address").max(120),
-  phone: z.string().trim().regex(/^(\+88)?01[3-9]\d{8}$/, "Enter a valid Bangladeshi phone number"),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^(\+88)?01[3-9]\d{8}$/, "Enter a valid Bangladeshi phone number"),
   password: z.string().min(6, "Password must be at least 6 characters").max(64),
   city: z.string().min(1, "Select your city"),
 });
 
-const CITIES = Object.entries(DIVISIONS).flatMap(([div, cities]) => cities.map((c) => ({ div, city: c })));
+const CITIES = Object.entries(DIVISIONS).flatMap(([div, cities]) =>
+  cities.map((c) => ({ div, city: c })),
+);
 
 function RegisterPage() {
   const { register } = useStore();
@@ -107,13 +124,26 @@ function RegisterPage() {
             </div>
 
             <Field label="Full Name" error={errors["name"]}>
-              <Input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Nusrat Jahan" />
+              <Input
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+                placeholder="e.g. Nusrat Jahan"
+              />
             </Field>
             <Field label="Email" error={errors["email"]}>
-              <Input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="you@example.com" />
+              <Input
+                type="email"
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+                placeholder="you@example.com"
+              />
             </Field>
             <Field label="Phone" error={errors["phone"]}>
-              <Input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="01XXXXXXXXX" />
+              <Input
+                value={form.phone}
+                onChange={(e) => set("phone", e.target.value)}
+                placeholder="01XXXXXXXXX"
+              />
             </Field>
             <Field label="Password" error={errors["password"]}>
               <div className="relative">
@@ -136,7 +166,9 @@ function RegisterPage() {
             </Field>
             <Field label="City / District" error={errors["city"]}>
               <Select value={form.city} onValueChange={(v) => set("city", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   {CITIES.map((c) => (
                     <SelectItem key={c.city} value={c.city}>
@@ -191,7 +223,15 @@ function RegisterPage() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string | undefined;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-2">
       <Label>{label}</Label>

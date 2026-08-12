@@ -25,7 +25,10 @@ export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — TaskAnt" },
-      { name: "description", content: "Track your active tasks, bids, earnings, messages and notifications on TaskAnt." },
+      {
+        name: "description",
+        content: "Track your active tasks, bids, earnings, messages and notifications on TaskAnt.",
+      },
       { property: "og:title", content: "Dashboard — TaskAnt" },
       { property: "og:description", content: "Your TaskAnt control centre." },
     ],
@@ -45,13 +48,19 @@ function Dashboard() {
   const workingTasks = db.tasks.filter((t) => t.workerId === me.id);
   const isWorkerView = me.role === "worker";
 
-  const activePoster = postedTasks.filter((t) => ["ASSIGNED", "IN_PROGRESS", "COMPLETED", "CONFIRMED"].includes(t.status));
+  const activePoster = postedTasks.filter((t) =>
+    ["ASSIGNED", "IN_PROGRESS", "COMPLETED", "CONFIRMED"].includes(t.status),
+  );
   const pendingPoster = postedTasks.filter((t) => ["OPEN", "BIDDING"].includes(t.status));
   const donePoster = postedTasks.filter((t) => t.status === "PAID");
 
-  const activeWorker = workingTasks.filter((t) => ["ASSIGNED", "IN_PROGRESS", "COMPLETED", "CONFIRMED"].includes(t.status));
+  const activeWorker = workingTasks.filter((t) =>
+    ["ASSIGNED", "IN_PROGRESS", "COMPLETED", "CONFIRMED"].includes(t.status),
+  );
   const doneWorker = workingTasks.filter((t) => t.status === "PAID");
-  const available = db.tasks.filter((t) => !t.workerId && ["OPEN", "BIDDING"].includes(t.status) && t.posterId !== me.id);
+  const available = db.tasks.filter(
+    (t) => !t.workerId && ["OPEN", "BIDDING"].includes(t.status) && t.posterId !== me.id,
+  );
 
   const recommended = [...available]
     .map((t) => ({ task: t, score: matchScore(me, t) }))
@@ -70,15 +79,28 @@ function Dashboard() {
     <div className="mx-auto max-w-7xl px-4 py-10">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Avatar className="size-12"><AvatarImage src={me.avatar} /><AvatarFallback>{me.name.slice(0, 2)}</AvatarFallback></Avatar>
+          <Avatar className="size-12">
+            <AvatarImage src={me.avatar} />
+            <AvatarFallback>{me.name.slice(0, 2)}</AvatarFallback>
+          </Avatar>
           <div>
             <h1 className="text-2xl font-extrabold">Welcome back, {me.name.split(" ")[0]}</h1>
-            <p className="text-sm capitalize text-muted-foreground">{me.role} account · {me.city}</p>
+            <p className="text-sm capitalize text-muted-foreground">
+              {me.role} account · {me.city}
+            </p>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button asChild variant="outline"><Link to="/tasks"><Search /> Find tasks</Link></Button>
-          <Button asChild><Link to="/post-task"><PlusCircle /> Post a task</Link></Button>
+          <Button asChild variant="outline">
+            <Link to="/tasks">
+              <Search /> Find tasks
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link to="/post-task">
+              <PlusCircle /> Post a task
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -86,17 +108,57 @@ function Dashboard() {
       <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {isWorkerView ? (
           <>
-            <StatCard icon={Search} label="Available Tasks" value={String(available.length)} tone="primary" />
-            <StatCard icon={Activity} label="Active Tasks" value={String(activeWorker.length)} tone="warning" />
-            <StatCard icon={CheckCircle2} label="Completed Tasks" value={String(doneWorker.length + me.completedTasks)} tone="success" />
-            <StatCard icon={Banknote} label="Total Earnings" value={bdt(me.earnings)} tone="success" />
+            <StatCard
+              icon={Search}
+              label="Available Tasks"
+              value={String(available.length)}
+              tone="primary"
+            />
+            <StatCard
+              icon={Activity}
+              label="Active Tasks"
+              value={String(activeWorker.length)}
+              tone="warning"
+            />
+            <StatCard
+              icon={CheckCircle2}
+              label="Completed Tasks"
+              value={String(doneWorker.length + me.completedTasks)}
+              tone="success"
+            />
+            <StatCard
+              icon={Banknote}
+              label="Total Earnings"
+              value={bdt(me.earnings)}
+              tone="success"
+            />
           </>
         ) : (
           <>
-            <StatCard icon={Activity} label="Active Tasks" value={String(activePoster.length)} tone="primary" />
-            <StatCard icon={CheckCircle2} label="Completed Tasks" value={String(donePoster.length)} tone="success" />
-            <StatCard icon={Clock} label="Pending Tasks" value={String(pendingPoster.length)} tone="warning" />
-            <StatCard icon={Wallet} label="Total Spending" value={bdt(me.spending)} tone="primary" />
+            <StatCard
+              icon={Activity}
+              label="Active Tasks"
+              value={String(activePoster.length)}
+              tone="primary"
+            />
+            <StatCard
+              icon={CheckCircle2}
+              label="Completed Tasks"
+              value={String(donePoster.length)}
+              tone="success"
+            />
+            <StatCard
+              icon={Clock}
+              label="Pending Tasks"
+              value={String(pendingPoster.length)}
+              tone="warning"
+            />
+            <StatCard
+              icon={Wallet}
+              label="Total Spending"
+              value={bdt(me.spending)}
+              tone="primary"
+            />
           </>
         )}
       </div>
@@ -107,7 +169,10 @@ function Dashboard() {
             <>
               <Panel title="Recommended Tasks" icon={Sparkles}>
                 {recommended.length === 0 ? (
-                  <EmptyState title="No matching tasks right now" description="Check back soon or browse the full marketplace." />
+                  <EmptyState
+                    title="No matching tasks right now"
+                    description="Check back soon or browse the full marketplace."
+                  />
                 ) : (
                   <ul className="space-y-3">
                     {recommended.map(({ task, score }) => (
@@ -121,7 +186,9 @@ function Dashboard() {
               </Panel>
               <Panel title="Recent Earnings" icon={Banknote}>
                 {earnings.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No earnings yet — complete a task to get paid.</p>
+                  <p className="text-sm text-muted-foreground">
+                    No earnings yet — complete a task to get paid.
+                  </p>
                 ) : (
                   <ul className="divide-y">
                     {earnings.slice(0, 5).map((p) => {
@@ -129,7 +196,9 @@ function Dashboard() {
                       return (
                         <li key={p.id} className="flex items-center justify-between py-3 text-sm">
                           <span className="truncate pr-3">{t?.title ?? "Task"}</span>
-                          <span className="shrink-0 font-semibold text-success">+{bdt(p.amount)}</span>
+                          <span className="shrink-0 font-semibold text-success">
+                            +{bdt(p.amount)}
+                          </span>
                         </li>
                       );
                     })}
@@ -150,20 +219,35 @@ function Dashboard() {
         </div>
 
         <div className="space-y-6">
-          <Panel title="Recent Messages" icon={MessageSquare} action={<Link to="/messages" className="text-xs font-medium text-primary hover:underline">Open chat</Link>}>
+          <Panel
+            title="Recent Messages"
+            icon={MessageSquare}
+            action={
+              <Link to="/messages" className="text-xs font-medium text-primary hover:underline">
+                Open chat
+              </Link>
+            }
+          >
             {myConversations.length === 0 ? (
               <p className="text-sm text-muted-foreground">No conversations yet.</p>
             ) : (
               <ul className="space-y-3">
                 {myConversations.map((c) => {
-                  const other = db.users.find((u) => u.id === c.participants.find((p) => p !== me.id))!;
+                  const other = db.users.find(
+                    (u) => u.id === c.participants.find((p) => p !== me.id),
+                  )!;
                   const last = [...db.messages].reverse().find((m) => m.conversationId === c.id);
                   return (
                     <li key={c.id} className="flex items-center gap-3">
-                      <Avatar className="size-9"><AvatarImage src={other?.avatar} /><AvatarFallback>{other?.name.slice(0, 2)}</AvatarFallback></Avatar>
+                      <Avatar className="size-9">
+                        <AvatarImage src={other?.avatar} />
+                        <AvatarFallback>{other?.name.slice(0, 2)}</AvatarFallback>
+                      </Avatar>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium">{other?.name}</p>
-                        <p className="truncate text-xs text-muted-foreground">{last?.text ?? "Say hello 👋"}</p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {last?.text ?? "Say hello 👋"}
+                        </p>
                       </div>
                     </li>
                   );
@@ -172,7 +256,18 @@ function Dashboard() {
             )}
           </Panel>
 
-          <Panel title="Notifications" icon={Bell} action={<Link to="/notifications" className="text-xs font-medium text-primary hover:underline">See all</Link>}>
+          <Panel
+            title="Notifications"
+            icon={Bell}
+            action={
+              <Link
+                to="/notifications"
+                className="text-xs font-medium text-primary hover:underline"
+              >
+                See all
+              </Link>
+            }
+          >
             {notifications.length === 0 ? (
               <p className="text-sm text-muted-foreground">You're all caught up.</p>
             ) : (
@@ -236,7 +331,9 @@ function Panel({
   return (
     <section className="card-surface p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 font-semibold"><Icon size={16} className="text-primary" /> {title}</h2>
+        <h2 className="flex items-center gap-2 font-semibold">
+          <Icon size={16} className="text-primary" /> {title}
+        </h2>
         {action}
       </div>
       {children}
@@ -246,7 +343,13 @@ function Panel({
 
 function TaskList({ tasks, empty }: { tasks: Task[]; empty: string }) {
   if (tasks.length === 0) return <p className="text-sm text-muted-foreground">{empty}</p>;
-  return <ul className="space-y-3">{tasks.map((t) => <TaskRow key={t.id} task={t} />)}</ul>;
+  return (
+    <ul className="space-y-3">
+      {tasks.map((t) => (
+        <TaskRow key={t.id} task={t} />
+      ))}
+    </ul>
+  );
 }
 
 function TaskRow({ task, badge }: { task: Task; badge?: string }) {

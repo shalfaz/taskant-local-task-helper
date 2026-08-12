@@ -9,7 +9,10 @@ const MAP: Record<TaskStatus, { label: string; cls: string }> = {
   COMPLETED: { label: "Completed", cls: "bg-chart-4/15 text-chart-4 border-chart-4/30" },
   CONFIRMED: { label: "Confirmed", cls: "bg-success/15 text-success border-success/30" },
   PAID: { label: "Paid", cls: "bg-success text-success-foreground border-transparent" },
-  CANCELLED: { label: "Cancelled", cls: "bg-destructive/12 text-destructive border-destructive/25" },
+  CANCELLED: {
+    label: "Cancelled",
+    cls: "bg-destructive/12 text-destructive border-destructive/25",
+  },
 };
 
 export function StatusBadge({ status, className }: { status: TaskStatus; className?: string }) {

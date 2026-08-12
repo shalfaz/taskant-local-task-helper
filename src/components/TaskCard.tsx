@@ -23,7 +23,9 @@ export function TaskCard({ task }: { task: Task }) {
           <span className="inline-block rounded-md bg-primary-soft px-2 py-0.5 text-[11px] font-semibold text-primary">
             {task.category}
           </span>
-          <h3 className="mt-2 line-clamp-2 text-base font-semibold group-hover:text-primary">{task.title}</h3>
+          <h3 className="mt-2 line-clamp-2 text-base font-semibold group-hover:text-primary">
+            {task.title}
+          </h3>
         </div>
         <StatusBadge status={task.status} />
       </div>
@@ -41,7 +43,8 @@ export function TaskCard({ task }: { task: Task }) {
           <Calendar size={14} className="text-primary" /> {dateLabel(task.deadline)}
         </span>
         <span className="flex items-center gap-1.5 text-muted-foreground">
-          <MessagesSquare size={14} className="text-primary" /> {bidCount} bid{bidCount === 1 ? "" : "s"}
+          <MessagesSquare size={14} className="text-primary" /> {bidCount} bid
+          {bidCount === 1 ? "" : "s"}
         </span>
       </div>
 

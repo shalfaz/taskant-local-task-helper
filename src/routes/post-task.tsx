@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { RequireAuth } from "@/components/RequireAuth";
 import { useStore } from "@/lib/store";
@@ -17,9 +23,16 @@ export const Route = createFileRoute("/post-task")({
   head: () => ({
     meta: [
       { title: "Post a Task — TaskAnt" },
-      { name: "description", content: "Describe your task, set a budget and deadline, and get bids from verified local workers." },
+      {
+        name: "description",
+        content:
+          "Describe your task, set a budget and deadline, and get bids from verified local workers.",
+      },
       { property: "og:title", content: "Post a Task — TaskAnt" },
-      { property: "og:description", content: "Publish a local task in minutes and get help where you can't be." },
+      {
+        property: "og:description",
+        content: "Publish a local task in minutes and get help where you can't be.",
+      },
     ],
   }),
   component: () => (
@@ -63,17 +76,20 @@ function PostTaskPage() {
     instructions: "",
   });
 
-  const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
+    setForm((f) => ({ ...f, [k]: v }));
 
   const validate = () => {
     const e: Record<string, string> = {};
     if (form.title.trim().length < 8) e["title"] = "Give a clear title (at least 8 characters).";
-    if (form.description.trim().length < 20) e["description"] = "Describe the task in at least 20 characters.";
+    if (form.description.trim().length < 20)
+      e["description"] = "Describe the task in at least 20 characters.";
     if (!form.area.trim()) e["area"] = "Add the exact place / area.";
     const b = Number(form.budget);
     if (!b || b < 50) e["budget"] = "Budget must be at least ৳50.";
     if (!form.deadline) e["deadline"] = "Choose a deadline.";
-    else if (new Date(form.deadline).getTime() < Date.now()) e["deadline"] = "Deadline must be in the future.";
+    else if (new Date(form.deadline).getTime() < Date.now())
+      e["deadline"] = "Deadline must be in the future.";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -144,15 +160,26 @@ function PostTaskPage() {
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Category">
               <Select value={form.category} onValueChange={(v) => set("category", v as Category)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  {CATEGORIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
             <Field label="Preferred worker gender (optional)">
-              <Select value={form.preferredGender} onValueChange={(v) => set("preferredGender", v as "Any")}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+              <Select
+                value={form.preferredGender}
+                onValueChange={(v) => set("preferredGender", v as "Any")}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Any">Any</SelectItem>
                   <SelectItem value="Male">Male</SelectItem>
@@ -181,32 +208,58 @@ function PostTaskPage() {
                   set("city", DIVISIONS[v]![0]!);
                 }}
               >
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {Object.keys(DIVISIONS).map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                  {Object.keys(DIVISIONS).map((d) => (
+                    <SelectItem key={d} value={d}>
+                      {d}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
             <Field label="City / District">
               <Select value={form.city} onValueChange={(v) => set("city", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {DIVISIONS[form.division]!.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  {DIVISIONS[form.division]!.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
           </div>
 
           <Field label="Exact Task Location / Area" error={errors["area"]}>
-            <Input value={form.area} onChange={(e) => set("area", e.target.value)} placeholder="Education Board Office, Pabna Sadar" />
+            <Input
+              value={form.area}
+              onChange={(e) => set("area", e.target.value)}
+              placeholder="Education Board Office, Pabna Sadar"
+            />
           </Field>
 
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Budget (৳)" error={errors["budget"]}>
-              <Input type="number" min={50} value={form.budget} onChange={(e) => set("budget", e.target.value)} placeholder="800" />
+              <Input
+                type="number"
+                min={50}
+                value={form.budget}
+                onChange={(e) => set("budget", e.target.value)}
+                placeholder="800"
+              />
             </Field>
             <Field label="Deadline" error={errors["deadline"]}>
-              <Input type="date" value={form.deadline} onChange={(e) => set("deadline", e.target.value)} />
+              <Input
+                type="date"
+                value={form.deadline}
+                onChange={(e) => set("deadline", e.target.value)}
+              />
             </Field>
           </div>
 
@@ -220,7 +273,10 @@ function PostTaskPage() {
                     key={s}
                     type="button"
                     onClick={() =>
-                      set("skills", active ? form.skills.filter((x) => x !== s) : [...form.skills, s])
+                      set(
+                        "skills",
+                        active ? form.skills.filter((x) => x !== s) : [...form.skills, s],
+                      )
                     }
                     className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                       active ? "border-primary bg-primary-soft text-primary" : "hover:bg-muted"
@@ -253,8 +309,12 @@ function PostTaskPage() {
           </Field>
 
           <div className="flex flex-wrap gap-3">
-            <Button type="submit" variant="outline"><Eye /> Preview task</Button>
-            <Button type="button" onClick={publish}><PlusCircle /> Publish task</Button>
+            <Button type="submit" variant="outline">
+              <Eye /> Preview task
+            </Button>
+            <Button type="button" onClick={publish}>
+              <PlusCircle /> Publish task
+            </Button>
           </div>
         </form>
 
@@ -263,10 +323,14 @@ function PostTaskPage() {
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {preview ? "Task preview" : "Live preview"}
             </p>
-            <h3 className="mt-3 text-lg font-bold">{form.title || "Your task title appears here"}</h3>
+            <h3 className="mt-3 text-lg font-bold">
+              {form.title || "Your task title appears here"}
+            </h3>
             <div className="mt-2 flex flex-wrap gap-2">
               <Badge variant="secondary">{form.category}</Badge>
-              {form.preferredGender !== "Any" && <Badge variant="outline">{form.preferredGender} preferred</Badge>}
+              {form.preferredGender !== "Any" && (
+                <Badge variant="outline">{form.preferredGender} preferred</Badge>
+              )}
             </div>
             <p className="mt-3 whitespace-pre-wrap text-sm text-muted-foreground">
               {form.description || "Your detailed description will be shown to workers here."}
@@ -274,19 +338,27 @@ function PostTaskPage() {
             <dl className="mt-4 space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <MapPin size={14} className="text-primary" />
-                {form.area ? `${form.area}, ` : ""}{form.city}, {form.division}
+                {form.area ? `${form.area}, ` : ""}
+                {form.city}, {form.division}
               </div>
               <div className="flex items-center gap-2">
-                <Wallet size={14} className="text-primary" /> {form.budget ? bdt(Number(form.budget)) : "৳—"}
+                <Wallet size={14} className="text-primary" />{" "}
+                {form.budget ? bdt(Number(form.budget)) : "৳—"}
               </div>
               <div className="flex items-center gap-2">
                 <CalendarClock size={14} className="text-primary" />
-                {form.deadline ? dateLabel(new Date(form.deadline).toISOString()) : "No deadline set"}
+                {form.deadline
+                  ? dateLabel(new Date(form.deadline).toISOString())
+                  : "No deadline set"}
               </div>
             </dl>
             {form.skills.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-1.5">
-                {form.skills.map((s) => <Badge key={s} variant="outline">{s}</Badge>)}
+                {form.skills.map((s) => (
+                  <Badge key={s} variant="outline">
+                    {s}
+                  </Badge>
+                ))}
               </div>
             )}
             {preview && (
@@ -301,7 +373,15 @@ function PostTaskPage() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string | undefined;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-2">
       <Label>{label}</Label>

@@ -58,9 +58,15 @@ export const Route = createFileRoute("/tasks/$taskId")({
   head: () => ({
     meta: [
       { title: "Task Details — TaskAnt" },
-      { name: "description", content: "View full task details, bids, location, budget and deadline on TaskAnt." },
+      {
+        name: "description",
+        content: "View full task details, bids, location, budget and deadline on TaskAnt.",
+      },
       { property: "og:title", content: "Task Details — TaskAnt" },
-      { property: "og:description", content: "Review the task, submit a bid and chat with the poster." },
+      {
+        property: "og:description",
+        content: "Review the task, submit a bid and chat with the poster.",
+      },
     ],
   }),
   component: TaskDetails,
@@ -79,7 +85,11 @@ function TaskDetails() {
         <EmptyState
           title="Task not found"
           description="This task may have been removed by its poster or by an admin."
-          action={<Button asChild><Link to="/tasks">Back to marketplace</Link></Button>}
+          action={
+            <Button asChild>
+              <Link to="/tasks">Back to marketplace</Link>
+            </Button>
+          }
         />
       </div>
     );
@@ -120,21 +130,35 @@ function TaskDetails() {
               <div>
                 <Badge variant="secondary">{task.category}</Badge>
                 <h1 className="mt-2 text-2xl font-extrabold sm:text-3xl">{task.title}</h1>
-                <p className="mt-1 text-xs text-muted-foreground">Posted {timeAgo(task.createdAt)}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Posted {timeAgo(task.createdAt)}
+                </p>
               </div>
               <StatusBadge status={task.status} />
             </div>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-3">
               <Stat icon={<Wallet size={15} />} label="Budget" value={bdt(task.budget)} />
-              <Stat icon={<MapPin size={15} />} label="Location" value={`${task.city}, ${task.division}`} />
-              <Stat icon={<CalendarClock size={15} />} label="Deadline" value={dateLabel(task.deadline)} />
+              <Stat
+                icon={<MapPin size={15} />}
+                label="Location"
+                value={`${task.city}, ${task.division}`}
+              />
+              <Stat
+                icon={<CalendarClock size={15} />}
+                label="Deadline"
+                value={dateLabel(task.deadline)}
+              />
             </div>
 
-            <h2 className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Description</h2>
+            <h2 className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Description
+            </h2>
             <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{task.description}</p>
 
-            <p className="mt-4 text-sm"><strong>Exact area:</strong> {task.area}</p>
+            <p className="mt-4 text-sm">
+              <strong>Exact area:</strong> {task.area}
+            </p>
             {task.instructions && (
               <p className="mt-2 rounded-lg bg-muted p-3 text-sm">
                 <strong>Additional instructions:</strong> {task.instructions}
@@ -145,7 +169,11 @@ function TaskDetails() {
               <div className="mt-4">
                 <h3 className="text-sm font-semibold">Required skills</h3>
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  {task.skills.map((s) => <Badge key={s} variant="outline">{s}</Badge>)}
+                  {task.skills.map((s) => (
+                    <Badge key={s} variant="outline">
+                      {s}
+                    </Badge>
+                  ))}
                 </div>
               </div>
             )}
@@ -165,7 +193,11 @@ function TaskDetails() {
               <ReportDialog
                 targetType="task"
                 targetId={task.id}
-                trigger={<Button variant="ghost" size="sm"><Flag size={14} /> Report this task</Button>}
+                trigger={
+                  <Button variant="ghost" size="sm">
+                    <Flag size={14} /> Report this task
+                  </Button>
+                }
               />
             </div>
           </section>
@@ -180,11 +212,15 @@ function TaskDetails() {
           {/* Bids */}
           <section className="card-surface p-6">
             <div className="flex items-center justify-between">
-              <h2 className="flex items-center gap-2 font-semibold"><Gavel size={16} /> Bids ({bids.length})</h2>
+              <h2 className="flex items-center gap-2 font-semibold">
+                <Gavel size={16} /> Bids ({bids.length})
+              </h2>
             </div>
 
             {bids.length === 0 ? (
-              <p className="mt-4 text-sm text-muted-foreground">No bids yet. Be the first to bid on this task.</p>
+              <p className="mt-4 text-sm text-muted-foreground">
+                No bids yet. Be the first to bid on this task.
+              </p>
             ) : (
               <ul className="mt-4 space-y-3">
                 {bids.map((bid) => {
@@ -204,10 +240,13 @@ function TaskDetails() {
                               className="flex items-center gap-1.5 font-semibold hover:text-primary"
                             >
                               {w.name}
-                              {w.verification === "VERIFIED" && <BadgeCheck size={15} className="text-primary" />}
+                              {w.verification === "VERIFIED" && (
+                                <BadgeCheck size={15} className="text-primary" />
+                              )}
                             </Link>
                             <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                              <StarRating value={w.rating} size={11} /> {w.rating.toFixed(1)} · {w.completedTasks} tasks done · {w.city}
+                              <StarRating value={w.rating} size={11} /> {w.rating.toFixed(1)} ·{" "}
+                              {w.completedTasks} tasks done · {w.city}
                             </p>
                           </div>
                         </div>
@@ -218,7 +257,15 @@ function TaskDetails() {
                       </div>
                       <p className="mt-3 text-sm text-muted-foreground">{bid.message}</p>
                       <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <Badge variant={bid.status === "ACCEPTED" ? "default" : bid.status === "REJECTED" ? "destructive" : "secondary"}>
+                        <Badge
+                          variant={
+                            bid.status === "ACCEPTED"
+                              ? "default"
+                              : bid.status === "REJECTED"
+                                ? "destructive"
+                                : "secondary"
+                          }
+                        >
                           {bid.status}
                         </Badge>
                         {isPoster && bid.status === "PENDING" && task.status !== "ASSIGNED" && (
@@ -250,19 +297,24 @@ function TaskDetails() {
             <section className="card-surface p-6">
               <h2 className="font-semibold">Reviews for this task</h2>
               <ul className="mt-3 space-y-3">
-                {db.reviews.filter((r) => r.taskId === task.id).map((r) => {
-                  const from = db.users.find((u) => u.id === r.fromUserId)!;
-                  return (
-                    <li key={r.id} className="rounded-lg border p-4">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="size-7"><AvatarImage src={from.avatar} /><AvatarFallback>{from.name.slice(0, 2)}</AvatarFallback></Avatar>
-                        <span className="text-sm font-medium">{from.name}</span>
-                        <StarRating value={r.rating} size={12} />
-                      </div>
-                      <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>
-                    </li>
-                  );
-                })}
+                {db.reviews
+                  .filter((r) => r.taskId === task.id)
+                  .map((r) => {
+                    const from = db.users.find((u) => u.id === r.fromUserId)!;
+                    return (
+                      <li key={r.id} className="rounded-lg border p-4">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="size-7">
+                            <AvatarImage src={from.avatar} />
+                            <AvatarFallback>{from.name.slice(0, 2)}</AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm font-medium">{from.name}</span>
+                          <StarRating value={r.rating} size={12} />
+                        </div>
+                        <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>
+                      </li>
+                    );
+                  })}
                 {db.reviews.filter((r) => r.taskId === task.id).length === 0 && (
                   <p className="text-sm text-muted-foreground">No reviews yet for this task.</p>
                 )}
@@ -274,19 +326,28 @@ function TaskDetails() {
         {/* Sidebar */}
         <aside className="space-y-6">
           <div className="card-surface p-6">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Posted by</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Posted by
+            </h3>
             <div className="mt-3 flex items-center gap-3">
               <Avatar className="size-12">
                 <AvatarImage src={poster.avatar} alt={poster.name} />
                 <AvatarFallback>{poster.name.slice(0, 2)}</AvatarFallback>
               </Avatar>
               <div>
-                <Link to="/profile/$userId" params={{ userId: poster.id }} className="flex items-center gap-1.5 font-semibold hover:text-primary">
+                <Link
+                  to="/profile/$userId"
+                  params={{ userId: poster.id }}
+                  className="flex items-center gap-1.5 font-semibold hover:text-primary"
+                >
                   {poster.name}
-                  {poster.verification === "VERIFIED" && <BadgeCheck size={15} className="text-primary" />}
+                  {poster.verification === "VERIFIED" && (
+                    <BadgeCheck size={15} className="text-primary" />
+                  )}
                 </Link>
                 <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <StarRating value={poster.rating} size={11} /> {poster.rating.toFixed(1)} ({poster.reviewCount}) · {poster.city}
+                  <StarRating value={poster.rating} size={11} /> {poster.rating.toFixed(1)} (
+                  {poster.reviewCount}) · {poster.city}
                 </p>
               </div>
             </div>
@@ -336,13 +397,16 @@ function TaskDetails() {
                 )}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="destructive" className="w-full"><XCircle size={15} /> Cancel task</Button>
+                    <Button variant="destructive" className="w-full">
+                      <XCircle size={15} /> Cancel task
+                    </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Cancel this task?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        All pending bids will be rejected and the task will be removed from the marketplace.
+                        All pending bids will be rejected and the task will be removed from the
+                        marketplace.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -365,9 +429,13 @@ function TaskDetails() {
           {/* Payment summary */}
           {task.workerId && (
             <div className="card-surface p-6">
-              <h3 className="flex items-center gap-2 font-semibold"><CircleDollarSign size={16} /> Payment</h3>
+              <h3 className="flex items-center gap-2 font-semibold">
+                <CircleDollarSign size={16} /> Payment
+              </h3>
               <PaymentSummary amount={task.agreedAmount ?? task.budget} payment={payment} />
-              {isPoster && task.status === "CONFIRMED" && <PaymentDialog taskId={task.id} amount={task.agreedAmount ?? task.budget} />}
+              {isPoster && task.status === "CONFIRMED" && (
+                <PaymentDialog taskId={task.id} amount={task.agreedAmount ?? task.budget} />
+              )}
               {task.status === "PAID" && (
                 <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-success">
                   <ShieldCheck size={15} /> Demo payment completed
@@ -383,19 +451,30 @@ function TaskDetails() {
 
           {/* Recommended workers */}
           <div className="card-surface p-6">
-            <h3 className="flex items-center gap-2 font-semibold"><Sparkles size={16} className="text-primary" /> Workers near this task</h3>
+            <h3 className="flex items-center gap-2 font-semibold">
+              <Sparkles size={16} className="text-primary" /> Workers near this task
+            </h3>
             <p className="mt-1 text-xs text-muted-foreground">
               Rule-based matching on location, skills, rating and completed tasks.
             </p>
             <ul className="mt-4 space-y-3">
               {recs.map(({ worker: w, score }) => (
                 <li key={w.id} className="flex items-center gap-3">
-                  <Avatar className="size-9"><AvatarImage src={w.avatar} /><AvatarFallback>{w.name.slice(0, 2)}</AvatarFallback></Avatar>
+                  <Avatar className="size-9">
+                    <AvatarImage src={w.avatar} />
+                    <AvatarFallback>{w.name.slice(0, 2)}</AvatarFallback>
+                  </Avatar>
                   <div className="min-w-0 flex-1">
-                    <Link to="/profile/$userId" params={{ userId: w.id }} className="truncate text-sm font-medium hover:text-primary">
+                    <Link
+                      to="/profile/$userId"
+                      params={{ userId: w.id }}
+                      className="truncate text-sm font-medium hover:text-primary"
+                    >
                       {w.name}
                     </Link>
-                    <p className="text-xs text-muted-foreground">{w.city} · {w.rating.toFixed(1)}★ · {w.completedTasks} tasks</p>
+                    <p className="text-xs text-muted-foreground">
+                      {w.city} · {w.rating.toFixed(1)}★ · {w.completedTasks} tasks
+                    </p>
                   </div>
                   <Badge className="bg-success/15 text-success">{score}% Match</Badge>
                 </li>
@@ -411,7 +490,9 @@ function TaskDetails() {
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-xl border p-3">
-      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">{icon} {label}</p>
+      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        {icon} {label}
+      </p>
       <p className="mt-1 font-semibold">{value}</p>
     </div>
   );
@@ -430,12 +511,16 @@ function StatusTimeline({ status }: { status: TaskStatus }) {
           <li key={s} className="flex items-center gap-2 sm:block">
             <span
               className={`flex size-7 items-center justify-center rounded-full text-[11px] font-bold ${
-                done ? "bg-brand-gradient text-primary-foreground" : "bg-muted text-muted-foreground"
+                done
+                  ? "bg-brand-gradient text-primary-foreground"
+                  : "bg-muted text-muted-foreground"
               }`}
             >
               {i + 1}
             </span>
-            <span className={`text-[11px] font-medium sm:mt-2 sm:block ${done ? "" : "text-muted-foreground"}`}>
+            <span
+              className={`text-[11px] font-medium sm:mt-2 sm:block ${done ? "" : "text-muted-foreground"}`}
+            >
               {s.replace("_", " ")}
             </span>
           </li>
@@ -445,7 +530,15 @@ function StatusTimeline({ status }: { status: TaskStatus }) {
   );
 }
 
-function TaskActions({ task, isPoster, isWorker }: { task: { id: string; status: TaskStatus }; isPoster: boolean; isWorker: boolean }) {
+function TaskActions({
+  task,
+  isPoster,
+  isWorker,
+}: {
+  task: { id: string; status: TaskStatus };
+  isPoster: boolean;
+  isWorker: boolean;
+}) {
   const { updateTaskStatus } = useStore();
   const act = (next: TaskStatus, msg: string) => {
     updateTaskStatus(task.id, next);
@@ -454,17 +547,42 @@ function TaskActions({ task, isPoster, isWorker }: { task: { id: string; status:
 
   const buttons: React.ReactNode[] = [];
   if (isWorker && task.status === "ASSIGNED")
-    buttons.push(<Button key="a" onClick={() => act("IN_PROGRESS", "Task marked as In Progress.")}><ArrowRight size={15} /> Start task</Button>);
+    buttons.push(
+      <Button key="a" onClick={() => act("IN_PROGRESS", "Task marked as In Progress.")}>
+        <ArrowRight size={15} /> Start task
+      </Button>,
+    );
   if (isWorker && task.status === "IN_PROGRESS")
-    buttons.push(<Button key="b" onClick={() => act("COMPLETED", "Task marked as Completed. Waiting for poster confirmation.")}><CheckCircle2 size={15} /> Mark as completed</Button>);
+    buttons.push(
+      <Button
+        key="b"
+        onClick={() =>
+          act("COMPLETED", "Task marked as Completed. Waiting for poster confirmation.")
+        }
+      >
+        <CheckCircle2 size={15} /> Mark as completed
+      </Button>,
+    );
   if (isPoster && task.status === "COMPLETED")
-    buttons.push(<Button key="c" onClick={() => act("CONFIRMED", "Completion confirmed. You can now pay.")}><ShieldCheck size={15} /> Confirm completion</Button>);
+    buttons.push(
+      <Button key="c" onClick={() => act("CONFIRMED", "Completion confirmed. You can now pay.")}>
+        <ShieldCheck size={15} /> Confirm completion
+      </Button>,
+    );
 
   if (buttons.length === 0) return null;
   return <div className="mt-6 flex flex-wrap gap-2 border-t pt-5">{buttons}</div>;
 }
 
-function BidDialog({ taskId, budget, existing }: { taskId: string; budget: number; existing: boolean }) {
+function BidDialog({
+  taskId,
+  budget,
+  existing,
+}: {
+  taskId: string;
+  budget: number;
+  existing: boolean;
+}) {
   const { placeBid, currentUser } = useStore();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -507,24 +625,42 @@ function BidDialog({ taskId, budget, existing }: { taskId: string; budget: numbe
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Submit your bid</DialogTitle>
-          <DialogDescription>Posted budget: {bdt(budget)}. Explain why you're the right person.</DialogDescription>
+          <DialogDescription>
+            Posted budget: {bdt(budget)}. Explain why you're the right person.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Proposed price (৳)</Label>
-            <Input type="number" value={price} onChange={(e) => setPrice(e.target.value)} min={50} />
+            <Input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              min={50}
+            />
           </div>
           <div className="space-y-2">
             <Label>Estimated completion time</Label>
-            <Input value={time} onChange={(e) => setTime(e.target.value)} placeholder="Within 2 days" />
+            <Input
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              placeholder="Within 2 days"
+            />
           </div>
           <div className="space-y-2">
             <Label>Message to poster</Label>
-            <Textarea rows={4} value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={400} />
+            <Textarea
+              rows={4}
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              maxLength={400}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
           <Button onClick={submit}>Submit bid</Button>
         </DialogFooter>
       </DialogContent>
@@ -575,26 +711,40 @@ function PaymentDialog({ taskId, amount }: { taskId: string; amount: number }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="mt-4 w-full"><CircleDollarSign size={15} /> Pay {bdt(amount + Math.round(amount * SERVICE_FEE_RATE))}</Button>
+        <Button className="mt-4 w-full">
+          <CircleDollarSign size={15} /> Pay {bdt(amount + Math.round(amount * SERVICE_FEE_RATE))}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Demo Payment</DialogTitle>
           <DialogDescription>
-            No real money moves. This simulates a bKash / Nagad / SSLCommerz checkout for the university demo.
+            No real money moves. This simulates a bKash / Nagad / SSLCommerz checkout for the
+            university demo.
           </DialogDescription>
         </DialogHeader>
         <PaymentSummary amount={amount} />
-        <RadioGroup value={method} onValueChange={(v) => setMethod(v as Payment["method"])} className="mt-2 space-y-2">
+        <RadioGroup
+          value={method}
+          onValueChange={(v) => setMethod(v as Payment["method"])}
+          className="mt-2 space-y-2"
+        >
           {(["bKash (Demo)", "Nagad (Demo)", "Card (Demo)"] as const).map((m) => (
-            <label key={m} className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm ${method === m ? "border-primary bg-primary-soft" : ""}`}>
+            <label
+              key={m}
+              className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm ${method === m ? "border-primary bg-primary-soft" : ""}`}
+            >
               <RadioGroupItem value={m} /> {m}
             </label>
           ))}
         </RadioGroup>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={pay} disabled={processing}>{processing ? "Processing…" : "Confirm Demo Payment"}</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={pay} disabled={processing}>
+            {processing ? "Processing…" : "Confirm Demo Payment"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -609,7 +759,9 @@ function ReviewCard({ taskId, toUserId }: { taskId: string; toUserId: string }) 
 
   return (
     <div className="card-surface p-6">
-      <h3 className="flex items-center gap-2 font-semibold"><Star size={16} className="text-warning" /> Rate {target?.name}</h3>
+      <h3 className="flex items-center gap-2 font-semibold">
+        <Star size={16} className="text-warning" /> Rate {target?.name}
+      </h3>
       <div className="mt-3">
         <StarRating value={rating} size={24} onChange={setRating} />
       </div>

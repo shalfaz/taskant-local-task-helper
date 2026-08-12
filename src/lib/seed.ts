@@ -238,7 +238,8 @@ export const tasks: Task[] = [
   {
     id: "t_5",
     title: "Pay Utility Bill at Bank Branch",
-    description: "Pay my monthly electricity bill at the Janata Bank branch and send me the receipt photo.",
+    description:
+      "Pay my monthly electricity bill at the Janata Bank branch and send me the receipt photo.",
     category: "Local Errands",
     division: "Rajshahi",
     city: "Pabna",
@@ -273,7 +274,8 @@ export const tasks: Task[] = [
   {
     id: "t_7",
     title: "Collect Exam Admit Card from University",
-    description: "Collect my admit card from the Rajshahi University exam controller office and courier it to Dhaka.",
+    description:
+      "Collect my admit card from the Rajshahi University exam controller office and courier it to Dhaka.",
     category: "Education",
     division: "Rajshahi",
     city: "Rajshahi",
@@ -291,7 +293,8 @@ export const tasks: Task[] = [
   {
     id: "t_8",
     title: "Buy Medicine and Deliver to Elderly Relative",
-    description: "Purchase a prescribed medicine list from a pharmacy in Sylhet and deliver it to my uncle's house.",
+    description:
+      "Purchase a prescribed medicine list from a pharmacy in Sylhet and deliver it to my uncle's house.",
     category: "Local Errands",
     division: "Sylhet",
     city: "Sylhet",

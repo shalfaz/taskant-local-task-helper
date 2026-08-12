@@ -5,7 +5,13 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { RequireAuth } from "@/components/RequireAuth";
 import { useStore } from "@/lib/store";
@@ -14,7 +20,10 @@ export const Route = createFileRoute("/verification")({
   head: () => ({
     meta: [
       { title: "Identity Verification — TaskAnt" },
-      { name: "description", content: "Submit your NID or passport details to earn a verified badge on TaskAnt." },
+      {
+        name: "description",
+        content: "Submit your NID or passport details to earn a verified badge on TaskAnt.",
+      },
       { property: "og:title", content: "Identity Verification — TaskAnt" },
       { property: "og:description", content: "Verified members win more tasks." },
     ],
@@ -27,9 +36,21 @@ export const Route = createFileRoute("/verification")({
 });
 
 const STATE = {
-  VERIFIED: { icon: ShieldCheck, cls: "bg-success/15 text-success", text: "Your identity is verified. A badge is shown on your profile." },
-  PENDING: { icon: ShieldQuestion, cls: "bg-warning/20 text-warning-foreground", text: "Your documents are under review by the admin team." },
-  NOT_VERIFIED: { icon: ShieldAlert, cls: "bg-muted text-muted-foreground", text: "Verify your identity to win more tasks and build trust." },
+  VERIFIED: {
+    icon: ShieldCheck,
+    cls: "bg-success/15 text-success",
+    text: "Your identity is verified. A badge is shown on your profile.",
+  },
+  PENDING: {
+    icon: ShieldQuestion,
+    cls: "bg-warning/20 text-warning-foreground",
+    text: "Your documents are under review by the admin team.",
+  },
+  NOT_VERIFIED: {
+    icon: ShieldAlert,
+    cls: "bg-muted text-muted-foreground",
+    text: "Verify your identity to win more tasks and build trust.",
+  },
 } as const;
 
 function VerificationPage() {
@@ -74,17 +95,27 @@ function VerificationPage() {
             <div className="space-y-2">
               <Label>ID type</Label>
               <Select value={idType} onValueChange={setIdType}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {["National ID (NID)", "Passport", "Driving Licence", "Birth Certificate"].map((t) => (
-                    <SelectItem key={t} value={t}>{t}</SelectItem>
-                  ))}
+                  {["National ID (NID)", "Passport", "Driving Licence", "Birth Certificate"].map(
+                    (t) => (
+                      <SelectItem key={t} value={t}>
+                        {t}
+                      </SelectItem>
+                    ),
+                  )}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
               <Label>Phone number</Label>
-              <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="01XXXXXXXXX" />
+              <Input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="01XXXXXXXXX"
+              />
             </div>
             <div className="space-y-2">
               <Label>Verification document</Label>
@@ -98,7 +129,8 @@ function VerificationPage() {
                 />
               </label>
               <p className="text-xs text-muted-foreground">
-                Demo notice: files are never uploaded or stored — only the file name is kept in this browser session.
+                Demo notice: files are never uploaded or stored — only the file name is kept in this
+                browser session.
               </p>
             </div>
             <Button type="submit" className="w-full" disabled={me.verification === "PENDING"}>

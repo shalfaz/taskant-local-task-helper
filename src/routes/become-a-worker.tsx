@@ -10,7 +10,11 @@ export const Route = createFileRoute("/become-a-worker")({
   head: () => ({
     meta: [
       { title: "Become a TaskAnt Worker — Earn Locally" },
-      { name: "description", content: "Earn money completing small local tasks in your own city on your own schedule with TaskAnt." },
+      {
+        name: "description",
+        content:
+          "Earn money completing small local tasks in your own city on your own schedule with TaskAnt.",
+      },
       { property: "og:title", content: "Become a TaskAnt Worker" },
       { property: "og:description", content: "Flexible local earning across Bangladesh." },
     ],
@@ -19,10 +23,26 @@ export const Route = createFileRoute("/become-a-worker")({
 });
 
 const BENEFITS = [
-  { icon: CalendarClock, t: "Work on your schedule", d: "Bid only on tasks that fit your day — no fixed shifts." },
-  { icon: MapPin, t: "Stay in your own area", d: "Tasks are matched to your city and declared service areas." },
-  { icon: Banknote, t: "Transparent earning", d: "You see the budget before bidding; payment is released on confirmation." },
-  { icon: ShieldCheck, t: "Protected by verification", d: "NID verification and ratings keep both sides accountable." },
+  {
+    icon: CalendarClock,
+    t: "Work on your schedule",
+    d: "Bid only on tasks that fit your day — no fixed shifts.",
+  },
+  {
+    icon: MapPin,
+    t: "Stay in your own area",
+    d: "Tasks are matched to your city and declared service areas.",
+  },
+  {
+    icon: Banknote,
+    t: "Transparent earning",
+    d: "You see the budget before bidding; payment is released on confirmation.",
+  },
+  {
+    icon: ShieldCheck,
+    t: "Protected by verification",
+    d: "NID verification and ratings keep both sides accountable.",
+  },
 ];
 
 function BecomeAWorker() {
@@ -41,11 +61,14 @@ function BecomeAWorker() {
           </span>
           <h1 className="mt-5 text-4xl font-extrabold sm:text-5xl">Become a TaskAnt Worker</h1>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            Students, riders, freelancers and full-time errand runners use TaskAnt to earn from small tasks that are
-            already on their route. Collect a certificate, receive a parcel, visit an office — get paid for it.
+            Students, riders, freelancers and full-time errand runners use TaskAnt to earn from
+            small tasks that are already on their route. Collect a certificate, receive a parcel,
+            visit an office — get paid for it.
           </p>
           <Button asChild size="lg" className="mt-7">
-            <Link to="/register"><UserPlus /> Join as a worker</Link>
+            <Link to="/register">
+              <UserPlus /> Join as a worker
+            </Link>
           </Button>
         </div>
       </section>
@@ -72,11 +95,18 @@ function BecomeAWorker() {
               params={{ userId: w.id }}
               className="card-surface p-6 text-center transition-all hover:-translate-y-0.5 hover:shadow-lift"
             >
-              <Avatar className="mx-auto size-16"><AvatarImage src={w.avatar} /><AvatarFallback>{w.name.slice(0, 2)}</AvatarFallback></Avatar>
+              <Avatar className="mx-auto size-16">
+                <AvatarImage src={w.avatar} />
+                <AvatarFallback>{w.name.slice(0, 2)}</AvatarFallback>
+              </Avatar>
               <p className="mt-3 font-semibold">{w.name}</p>
               <p className="text-xs text-muted-foreground">{w.city}</p>
-              <div className="mt-2 flex justify-center"><StarRating value={w.rating} /></div>
-              <p className="mt-2 text-sm text-muted-foreground">{w.completedTasks} tasks · {bdt(w.earnings)} earned</p>
+              <div className="mt-2 flex justify-center">
+                <StarRating value={w.rating} />
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {w.completedTasks} tasks · {bdt(w.earnings)} earned
+              </p>
             </Link>
           ))}
         </div>

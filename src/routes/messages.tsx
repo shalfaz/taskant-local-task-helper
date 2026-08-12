@@ -14,7 +14,10 @@ export const Route = createFileRoute("/messages")({
   head: () => ({
     meta: [
       { title: "Messages — TaskAnt" },
-      { name: "description", content: "Chat with task posters and workers in real time inside TaskAnt." },
+      {
+        name: "description",
+        content: "Chat with task posters and workers in real time inside TaskAnt.",
+      },
       { property: "og:title", content: "Messages — TaskAnt" },
       { property: "og:description", content: "Secure in-app messaging for every task." },
     ],
@@ -85,14 +88,24 @@ function MessagesPage() {
           {/* list */}
           <aside className={cn("flex flex-col border-r", active && "hidden md:flex")}>
             <div className="relative p-3">
-              <Search size={15} className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search conversations" className="pl-9" />
+              <Search
+                size={15}
+                className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+              <Input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Search conversations"
+                className="pl-9"
+              />
             </div>
             <ul className="flex-1 overflow-y-auto">
               {filtered.map((c) => {
                 const o = db.users.find((u) => u.id === c.participants.find((p) => p !== me.id));
                 const last = [...db.messages].reverse().find((m) => m.conversationId === c.id);
-                const unread = db.messages.filter((m) => m.conversationId === c.id && !m.read && m.senderId !== me.id).length;
+                const unread = db.messages.filter(
+                  (m) => m.conversationId === c.id && !m.read && m.senderId !== me.id,
+                ).length;
                 return (
                   <li key={c.id}>
                     <button
@@ -103,18 +116,29 @@ function MessagesPage() {
                       )}
                     >
                       <span className="relative">
-                        <Avatar className="size-10"><AvatarImage src={o?.avatar} /><AvatarFallback>{o?.name.slice(0, 2)}</AvatarFallback></Avatar>
-                        {o?.online && <span className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-card bg-success" />}
+                        <Avatar className="size-10">
+                          <AvatarImage src={o?.avatar} />
+                          <AvatarFallback>{o?.name.slice(0, 2)}</AvatarFallback>
+                        </Avatar>
+                        {o?.online && (
+                          <span className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full border-2 border-card bg-success" />
+                        )}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center justify-between gap-2">
                           <span className="truncate text-sm font-semibold">{o?.name}</span>
-                          <span className="shrink-0 text-[10px] text-muted-foreground">{timeAgo(c.updatedAt)}</span>
+                          <span className="shrink-0 text-[10px] text-muted-foreground">
+                            {timeAgo(c.updatedAt)}
+                          </span>
                         </span>
-                        <span className="block truncate text-xs text-muted-foreground">{last?.text ?? "No messages yet"}</span>
+                        <span className="block truncate text-xs text-muted-foreground">
+                          {last?.text ?? "No messages yet"}
+                        </span>
                       </span>
                       {unread > 0 && (
-                        <span className="rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">{unread}</span>
+                        <span className="rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                          {unread}
+                        </span>
                       )}
                     </button>
                   </li>
@@ -126,11 +150,23 @@ function MessagesPage() {
           {/* thread */}
           <section className="flex min-h-0 flex-col">
             <header className="flex items-center gap-3 border-b p-3">
-              <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setActiveId(null)}>←</Button>
-              <Avatar className="size-9"><AvatarImage src={other?.avatar} /><AvatarFallback>{other?.name.slice(0, 2)}</AvatarFallback></Avatar>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="md:hidden"
+                onClick={() => setActiveId(null)}
+              >
+                ←
+              </Button>
+              <Avatar className="size-9">
+                <AvatarImage src={other?.avatar} />
+                <AvatarFallback>{other?.name.slice(0, 2)}</AvatarFallback>
+              </Avatar>
               <div>
                 <p className="text-sm font-semibold">{other?.name}</p>
-                <p className="text-xs text-muted-foreground">{other?.online ? "Online now" : "Offline"}</p>
+                <p className="text-xs text-muted-foreground">
+                  {other?.online ? "Online now" : "Offline"}
+                </p>
               </div>
             </header>
 
@@ -142,14 +178,23 @@ function MessagesPage() {
                     <div
                       className={cn(
                         "max-w-[75%] rounded-2xl px-4 py-2 text-sm shadow-card",
-                        mine ? "rounded-br-md bg-primary text-primary-foreground" : "rounded-bl-md bg-card",
+                        mine
+                          ? "rounded-br-md bg-primary text-primary-foreground"
+                          : "rounded-bl-md bg-card",
                       )}
                     >
                       <p className="whitespace-pre-wrap">{m.text}</p>
                       {m.attachment && <p className="mt-1 text-xs opacity-80">📎 {m.attachment}</p>}
-                      <span className={cn("mt-1 flex items-center justify-end gap-1 text-[10px]", mine ? "text-primary-foreground/75" : "text-muted-foreground")}>
+                      <span
+                        className={cn(
+                          "mt-1 flex items-center justify-end gap-1 text-[10px]",
+                          mine ? "text-primary-foreground/75" : "text-muted-foreground",
+                        )}
+                      >
                         {timeLabel(m.createdAt)}
-                        {mine && <CheckCheck size={12} className={m.read ? "opacity-100" : "opacity-50"} />}
+                        {mine && (
+                          <CheckCheck size={12} className={m.read ? "opacity-100" : "opacity-50"} />
+                        )}
                       </span>
                     </div>
                   </div>
@@ -173,7 +218,9 @@ function MessagesPage() {
                 onKeyDown={(e) => e.key === "Enter" && send()}
                 placeholder="Type a message…"
               />
-              <Button onClick={send} disabled={!text.trim()} aria-label="Send message"><Send size={16} /></Button>
+              <Button onClick={send} disabled={!text.trim()} aria-label="Send message">
+                <Send size={16} />
+              </Button>
             </footer>
           </section>
         </div>

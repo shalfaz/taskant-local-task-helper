@@ -25,7 +25,10 @@ export const Route = createFileRoute("/profile/$userId")({
   head: () => ({
     meta: [
       { title: "User Profile — TaskAnt" },
-      { name: "description", content: "See ratings, reviews, completed tasks, skills and verification status." },
+      {
+        name: "description",
+        content: "See ratings, reviews, completed tasks, skills and verification status.",
+      },
       { property: "og:title", content: "User Profile — TaskAnt" },
       { property: "og:description", content: "Trust profiles for every TaskAnt member." },
     ],
@@ -35,7 +38,11 @@ export const Route = createFileRoute("/profile/$userId")({
 
 const VERIF: Record<string, { label: string; cls: string; icon: typeof ShieldCheck }> = {
   VERIFIED: { label: "Verified", cls: "bg-success/15 text-success", icon: ShieldCheck },
-  PENDING: { label: "Verification pending", cls: "bg-warning/20 text-warning-foreground", icon: ShieldAlert },
+  PENDING: {
+    label: "Verification pending",
+    cls: "bg-warning/20 text-warning-foreground",
+    icon: ShieldAlert,
+  },
   NOT_VERIFIED: { label: "Not verified", cls: "bg-muted text-muted-foreground", icon: ShieldAlert },
 };
 
@@ -48,16 +55,27 @@ function ProfilePage() {
   if (!user) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16">
-        <EmptyState title="User not found" action={<Button asChild><Link to="/tasks">Back to marketplace</Link></Button>} />
+        <EmptyState
+          title="User not found"
+          action={
+            <Button asChild>
+              <Link to="/tasks">Back to marketplace</Link>
+            </Button>
+          }
+        />
       </div>
     );
   }
 
   const reviews = db.reviews.filter((r) => r.toUserId === user.id);
-  const postedTasks = db.tasks.filter((t) => t.posterId === user.id && t.status !== "CANCELLED").slice(0, 4);
+  const postedTasks = db.tasks
+    .filter((t) => t.posterId === user.id && t.status !== "CANCELLED")
+    .slice(0, 4);
   const isMe = currentUser?.id === user.id;
   const V = VERIF[user.verification]!;
-  const completed = db.tasks.filter((t) => t.workerId === user.id && t.status === "PAID").length + user.completedTasks;
+  const completed =
+    db.tasks.filter((t) => t.workerId === user.id && t.status === "PAID").length +
+    user.completedTasks;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -71,18 +89,30 @@ function ProfilePage() {
           <div className="flex-1">
             <h1 className="flex items-center gap-2 text-2xl font-extrabold">
               {user.name}
-              {user.verification === "VERIFIED" && <BadgeCheck className="text-primary" size={20} />}
+              {user.verification === "VERIFIED" && (
+                <BadgeCheck className="text-primary" size={20} />
+              )}
             </h1>
             <p className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1"><MapPin size={14} /> {user.city}, {user.division}</span>
-              <span className="flex items-center gap-1"><CalendarDays size={14} /> Joined {dateLabel(user.joinedAt)}</span>
-              <span className="flex items-center gap-1 capitalize"><Briefcase size={14} /> {user.role}</span>
+              <span className="flex items-center gap-1">
+                <MapPin size={14} /> {user.city}, {user.division}
+              </span>
+              <span className="flex items-center gap-1">
+                <CalendarDays size={14} /> Joined {dateLabel(user.joinedAt)}
+              </span>
+              <span className="flex items-center gap-1 capitalize">
+                <Briefcase size={14} /> {user.role}
+              </span>
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge className={V.cls}><V.icon size={13} className="mr-1" /> {V.label}</Badge>
+            <Badge className={V.cls}>
+              <V.icon size={13} className="mr-1" /> {V.label}
+            </Badge>
             {isMe ? (
-              <Button asChild variant="outline"><Link to="/verification">Manage verification</Link></Button>
+              <Button asChild variant="outline">
+                <Link to="/verification">Manage verification</Link>
+              </Button>
             ) : (
               <>
                 <Button
@@ -102,7 +132,11 @@ function ProfilePage() {
                 <ReportDialog
                   targetType="user"
                   targetId={user.id}
-                  trigger={<Button variant="ghost"><Flag size={15} /> Report</Button>}
+                  trigger={
+                    <Button variant="ghost">
+                      <Flag size={15} /> Report
+                    </Button>
+                  }
                 />
               </>
             )}
@@ -114,7 +148,9 @@ function ProfilePage() {
         <aside className="space-y-6">
           <div className="card-surface p-6">
             <h2 className="font-semibold">About</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{user.bio || "This member hasn't added a bio yet."}</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {user.bio || "This member hasn't added a bio yet."}
+            </p>
             <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <Metric label="Rating" value={`${user.rating.toFixed(1)} ★`} />
               <Metric label="Reviews" value={String(user.reviewCount)} />
@@ -131,18 +167,31 @@ function ProfilePage() {
             <div className="card-surface p-6">
               <h2 className="font-semibold">Skills & service areas</h2>
               <div className="mt-3 flex flex-wrap gap-1.5">
-                {user.skills.length ? user.skills.map((s) => <Badge key={s} variant="outline">{s}</Badge>) : <p className="text-sm text-muted-foreground">No skills listed.</p>}
+                {user.skills.length ? (
+                  user.skills.map((s) => (
+                    <Badge key={s} variant="outline">
+                      {s}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">No skills listed.</p>
+                )}
               </div>
               <h3 className="mt-4 text-sm font-semibold">Service categories</h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {user.serviceCategories.map((c) => <Badge key={c} variant="secondary">{c}</Badge>)}
+                {user.serviceCategories.map((c) => (
+                  <Badge key={c} variant="secondary">
+                    {c}
+                  </Badge>
+                ))}
               </div>
               <h3 className="mt-4 text-sm font-semibold">Service areas</h3>
               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                 <MapPin size={14} /> {user.serviceAreas.join(", ") || user.city}
               </p>
               <p className="mt-4 flex items-center gap-2 text-sm">
-                <Wallet size={14} className="text-primary" /> Total earned: <strong>{bdt(user.earnings)}</strong>
+                <Wallet size={14} className="text-primary" /> Total earned:{" "}
+                <strong>{bdt(user.earnings)}</strong>
               </p>
             </div>
           )}
@@ -160,12 +209,17 @@ function ProfilePage() {
                   return (
                     <li key={r.id} className="rounded-xl border p-4">
                       <div className="flex items-center gap-2">
-                        <Avatar className="size-8"><AvatarImage src={from?.avatar} /><AvatarFallback>{from?.name.slice(0, 2)}</AvatarFallback></Avatar>
+                        <Avatar className="size-8">
+                          <AvatarImage src={from?.avatar} />
+                          <AvatarFallback>{from?.name.slice(0, 2)}</AvatarFallback>
+                        </Avatar>
                         <div>
                           <p className="text-sm font-medium">{from?.name}</p>
                           <StarRating value={r.rating} size={12} />
                         </div>
-                        <span className="ml-auto text-xs text-muted-foreground">{dateLabel(r.createdAt)}</span>
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          {dateLabel(r.createdAt)}
+                        </span>
                       </div>
                       <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>
                     </li>
@@ -179,7 +233,9 @@ function ProfilePage() {
             <section>
               <h2 className="mb-4 font-semibold">Tasks posted by {user.name.split(" ")[0]}</h2>
               <div className="grid gap-5 sm:grid-cols-2">
-                {postedTasks.map((t) => <TaskCard key={t.id} task={t} />)}
+                {postedTasks.map((t) => (
+                  <TaskCard key={t.id} task={t} />
+                ))}
               </div>
             </section>
           )}

@@ -44,7 +44,9 @@ export function Navbar() {
     (m) =>
       !m.read &&
       m.senderId !== currentUser?.id &&
-      db.conversations.some((c) => c.id === m.conversationId && c.participants.includes(currentUser?.id ?? "")),
+      db.conversations.some(
+        (c) => c.id === m.conversationId && c.participants.includes(currentUser?.id ?? ""),
+      ),
   ).length;
 
   const handleLogout = () => {
@@ -83,7 +85,12 @@ export function Navbar() {
         <div className="ml-auto flex items-center gap-2">
           {currentUser ? (
             <>
-              <Button asChild variant="ghost" size="icon" className="relative hidden sm:inline-flex">
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                className="relative hidden sm:inline-flex"
+              >
                 <Link to="/messages" aria-label="Messages">
                   <MessageSquare size={18} />
                   {unreadMsgs > 0 && (
@@ -108,13 +115,17 @@ export function Navbar() {
                       <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
                       <AvatarFallback>{currentUser.name.slice(0, 2)}</AvatarFallback>
                     </Avatar>
-                    <span className="hidden text-sm font-medium sm:block">{currentUser.name.split(" ")[0]}</span>
+                    <span className="hidden text-sm font-medium sm:block">
+                      {currentUser.name.split(" ")[0]}
+                    </span>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel className="capitalize">
                     {currentUser.name}
-                    <span className="block text-xs font-normal text-muted-foreground">{currentUser.role}</span>
+                    <span className="block text-xs font-normal text-muted-foreground">
+                      {currentUser.role}
+                    </span>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -161,7 +172,12 @@ export function Navbar() {
               </Button>
             </div>
           )}
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen((v) => !v)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setOpen((v) => !v)}
+          >
             {open ? <X size={20} /> : <Menu size={20} />}
           </Button>
         </div>
@@ -181,7 +197,11 @@ export function Navbar() {
               </Link>
             ))}
             {currentUser ? (
-              <Link to="/dashboard" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted">
+              <Link
+                to="/dashboard"
+                onClick={() => setOpen(false)}
+                className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-muted"
+              >
                 Dashboard
               </Link>
             ) : (

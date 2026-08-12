@@ -32,8 +32,8 @@ function ForgotPassword() {
               <MailCheck className="mx-auto mt-5 size-10 text-success" />
               <h1 className="mt-3 text-xl font-bold">Check your email</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                If an account exists for <strong>{email}</strong>, a reset link has been sent. (Demo mode: no real
-                email is delivered — use the demo accounts to log in.)
+                If an account exists for <strong>{email}</strong>, a reset link has been sent. (Demo
+                mode: no real email is delivered — use the demo accounts to log in.)
               </p>
               <Button asChild className="mt-6 w-full">
                 <Link to="/login">Back to login</Link>
@@ -54,13 +54,22 @@ function ForgotPassword() {
               >
                 <div className="space-y-2">
                   <Label htmlFor="fp-email">Email</Label>
-                  <Input id="fp-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <Input
+                    id="fp-email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   <KeyRound /> Send reset link
                 </Button>
               </form>
-              <Link to="/login" className="mt-5 inline-block text-sm font-medium text-primary hover:underline">
+              <Link
+                to="/login"
+                className="mt-5 inline-block text-sm font-medium text-primary hover:underline"
+              >
                 Back to login
               </Link>
             </>

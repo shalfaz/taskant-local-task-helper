@@ -6,7 +6,15 @@
  * same async-free interface a MongoDB/Express + JWT backend would expose, so
  * swapping `src/lib/api.ts` for real HTTP calls does not require UI changes.
  */
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { seedDB } from "./seed";
 import { uid } from "./format";
 import type {
@@ -33,7 +41,10 @@ interface StoreValue {
   currentUser: User | null;
   ready: boolean;
   login: (email: string, password: string) => { ok: boolean; error?: string };
-  register: (data: Partial<User> & { name: string; email: string; password: string }) => { ok: boolean; error?: string };
+  register: (data: Partial<User> & { name: string; email: string; password: string }) => {
+    ok: boolean;
+    error?: string;
+  };
   logout: () => void;
   switchUser: (id: string) => void;
   createTask: (t: Omit<Task, "id" | "createdAt" | "status" | "posterId">) => Task;
@@ -134,7 +145,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         const user = db.users.find((u) => u.email.toLowerCase() === email.trim().toLowerCase());
         if (!user) return { ok: false, error: "No account found with this email." };
         if (user.password !== password) return { ok: false, error: "Incorrect password." };
-        if (user.suspended) return { ok: false, error: "This account is suspended. Contact support." };
+        if (user.suspended)
+          return { ok: false, error: "This account is suspended. Contact support." };
         mutate((d) => {
           const u = d.users.find((x) => x.id === user.id)!;
           u.online = true;
@@ -174,16 +186,24 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         };
         mutate((d) => {
           d.users.push(user);
-          notify(d, user.id, "Welcome to TaskAnt 🐜", "Complete your profile and verification to build trust.", "system", "/profile/" + user.id);
+          notify(
+            d,
+            user.id,
+            "Welcome to TaskAnt 🐜",
+            "Complete your profile and verification to build trust.",
+            "system",
+            "/profile/" + user.id,
+          );
         });
         setCurrentUser(user);
         return { ok: true };
       },
       logout() {
-        if (me) mutate((d) => {
-          const u = d.users.find((x) => x.id === me.id);
-          if (u) u.online = false;
-        });
+        if (me)
+          mutate((d) => {
+            const u = d.users.find((x) => x.id === me.id);
+            if (u) u.online = false;
+          });
         setCurrentUser(null);
       },
       switchUser(id) {
@@ -200,11 +220,28 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         };
         mutate((d) => {
           d.tasks.unshift(task);
-          notify(d, me!.id, "Task published", `“${task.title}” is now live in the marketplace.`, "task", `/tasks/${task.id}`);
+          notify(
+            d,
+            me!.id,
+            "Task published",
+            `“${task.title}” is now live in the marketplace.`,
+            "task",
+            `/tasks/${task.id}`,
+          );
           d.users
-            .filter((u) => u.role === "worker" && (u.city === task.city || u.serviceAreas.includes(task.city)))
+            .filter(
+              (u) =>
+                u.role === "worker" && (u.city === task.city || u.serviceAreas.includes(task.city)),
+            )
             .forEach((w) =>
-              notify(d, w.id, "New task near you", `${task.title} — ${task.city} · ৳${task.budget}`, "task", `/tasks/${task.id}`),
+              notify(
+                d,
+                w.id,
+                "New task near you",
+                `${task.title} — ${task.city} · ৳${task.budget}`,
+                "task",
+                `/tasks/${task.id}`,
+              ),
             );
         });
         return task;
@@ -216,7 +253,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           task.status = status;
           const parties = [task.posterId, task.workerId].filter(Boolean) as string[];
           parties.forEach((p) =>
-            notify(d, p, "Task status changed", `“${task.title}” is now ${status.replace("_", " ")}.`, "status", `/tasks/${task.id}`),
+            notify(
+              d,
+              p,
+              "Task status changed",
+              `“${task.title}” is now ${status.replace("_", " ")}.`,
+              "status",
+              `/tasks/${task.id}`,
+            ),
           );
           if (status === "COMPLETED" && task.workerId) {
             const w = d.users.find((u) => u.id === task.workerId);
@@ -237,7 +281,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         mutate((d) => {
           const task = d.tasks.find((t) => t.id === taskId);
           d.tasks = d.tasks.filter((t) => t.id !== taskId);
-          if (task) notify(d, task.posterId, "Task removed by admin", `“${task.title}” was removed for policy review.`, "admin");
+          if (task)
+            notify(
+              d,
+              task.posterId,
+              "Task removed by admin",
+              `“${task.title}” was removed for policy review.`,
+              "admin",
+            );
         });
       },
       placeBid(taskId, price, estimatedTime, message) {
@@ -256,7 +307,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           };
           d.bids.unshift(bid);
           if (task.status === "OPEN") task.status = "BIDDING";
-          notify(d, task.posterId, "New bid received", `${me!.name} bid ৳${price} on “${task.title}”.`, "bid", `/tasks/${task.id}`);
+          notify(
+            d,
+            task.posterId,
+            "New bid received",
+            `${me!.name} bid ৳${price} on “${task.title}”.`,
+            "bid",
+            `/tasks/${task.id}`,
+          );
         });
       },
       acceptBid(bidId) {
@@ -266,13 +324,34 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           const task = d.tasks.find((t) => t.id === bid.taskId);
           if (!task) return;
           bid.status = "ACCEPTED";
-          d.bids.filter((b) => b.taskId === task.id && b.id !== bid.id).forEach((b) => (b.status = "REJECTED"));
+          d.bids
+            .filter((b) => b.taskId === task.id && b.id !== bid.id)
+            .forEach((b) => (b.status = "REJECTED"));
           task.workerId = bid.workerId;
           task.agreedAmount = bid.price;
           task.status = "ASSIGNED";
-          notify(d, bid.workerId, "Bid accepted 🎉", `You were selected for “${task.title}”.`, "bid", `/tasks/${task.id}`);
-          notify(d, task.posterId, "Task assigned", `“${task.title}” is assigned.`, "status", `/tasks/${task.id}`);
-          if (!d.conversations.some((c) => c.participants.includes(task.posterId) && c.participants.includes(bid.workerId))) {
+          notify(
+            d,
+            bid.workerId,
+            "Bid accepted 🎉",
+            `You were selected for “${task.title}”.`,
+            "bid",
+            `/tasks/${task.id}`,
+          );
+          notify(
+            d,
+            task.posterId,
+            "Task assigned",
+            `“${task.title}” is assigned.`,
+            "status",
+            `/tasks/${task.id}`,
+          );
+          if (
+            !d.conversations.some(
+              (c) =>
+                c.participants.includes(task.posterId) && c.participants.includes(bid.workerId),
+            )
+          ) {
             d.conversations.push({
               id: uid("c"),
               participants: [task.posterId, bid.workerId],
@@ -289,8 +368,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           task.workerId = me!.id;
           task.agreedAmount = task.budget;
           task.status = "ASSIGNED";
-          notify(d, task.posterId, "Worker accepted your task", `${me!.name} accepted “${task.title}”.`, "status", `/tasks/${task.id}`);
-          if (!d.conversations.some((c) => c.participants.includes(task.posterId) && c.participants.includes(me!.id))) {
+          notify(
+            d,
+            task.posterId,
+            "Worker accepted your task",
+            `${me!.name} accepted “${task.title}”.`,
+            "status",
+            `/tasks/${task.id}`,
+          );
+          if (
+            !d.conversations.some(
+              (c) => c.participants.includes(task.posterId) && c.participants.includes(me!.id),
+            )
+          ) {
             d.conversations.push({
               id: uid("c"),
               participants: [task.posterId, me!.id],
@@ -332,7 +422,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           d.messages.push(msg);
           conv.updatedAt = msg.createdAt;
           const other = conv.participants.find((p) => p !== me!.id)!;
-          notify(d, other, "New message", `${me!.name}: ${text.slice(0, 60)}`, "message", "/messages");
+          notify(
+            d,
+            other,
+            "New message",
+            `${me!.name}: ${text.slice(0, 60)}`,
+            "message",
+            "/messages",
+          );
         });
       },
       markConversationRead(conversationId) {
@@ -360,7 +457,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             target.reviewCount += 1;
             target.rating = Math.round((total / target.reviewCount) * 10) / 10;
           }
-          notify(d, toUserId, "New review", `${me!.name} rated you ${rating} ★.`, "review", `/profile/${toUserId}`);
+          notify(
+            d,
+            toUserId,
+            "New review",
+            `${me!.name} rated you ${rating} ★.`,
+            "review",
+            `/profile/${toUserId}`,
+          );
         });
       },
       payTask(taskId, method) {
@@ -387,8 +491,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           const worker = d.users.find((u) => u.id === task.workerId);
           if (poster) poster.spending += payment.total;
           if (worker) worker.earnings += amount;
-          notify(d, task.posterId, "Payment confirmed", `Demo payment of ৳${payment.total} completed via ${method}.`, "payment", `/tasks/${taskId}`);
-          notify(d, task.workerId, "You got paid 💸", `৳${amount} released for “${task.title}”.`, "payment", `/tasks/${taskId}`);
+          notify(
+            d,
+            task.posterId,
+            "Payment confirmed",
+            `Demo payment of ৳${payment.total} completed via ${method}.`,
+            "payment",
+            `/tasks/${taskId}`,
+          );
+          notify(
+            d,
+            task.workerId,
+            "You got paid 💸",
+            `৳${amount} released for “${task.title}”.`,
+            "payment",
+            `/tasks/${taskId}`,
+          );
         });
       },
       submitReport(r) {
@@ -402,7 +520,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           });
           d.users
             .filter((u) => u.role === "admin")
-            .forEach((a) => notify(d, a.id, "New report submitted", `${r.category} — needs review.`, "report", "/admin"));
+            .forEach((a) =>
+              notify(
+                d,
+                a.id,
+                "New report submitted",
+                `${r.category} — needs review.`,
+                "report",
+                "/admin",
+              ),
+            );
         });
       },
       submitVerification() {
@@ -411,14 +538,29 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           if (u) u.verification = "PENDING";
           d.users
             .filter((x) => x.role === "admin")
-            .forEach((a) => notify(d, a.id, "Verification request", `${me!.name} submitted verification documents.`, "verification", "/admin"));
+            .forEach((a) =>
+              notify(
+                d,
+                a.id,
+                "Verification request",
+                `${me!.name} submitted verification documents.`,
+                "verification",
+                "/admin",
+              ),
+            );
         });
       },
       setVerification(userId, status) {
         mutate((d) => {
           const u = d.users.find((x) => x.id === userId);
           if (u) u.verification = status;
-          notify(d, userId, "Verification update", `Your verification status is now ${status.replace("_", " ").toLowerCase()}.`, "verification");
+          notify(
+            d,
+            userId,
+            "Verification update",
+            `Your verification status is now ${status.replace("_", " ").toLowerCase()}.`,
+            "verification",
+          );
         });
       },
       toggleSuspend(userId) {
