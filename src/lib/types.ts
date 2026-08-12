@@ -82,13 +82,13 @@ export interface Task {
   deadline: string;
   preferredGender: "Any" | "Male" | "Female";
   skills: string[];
-  attachment?: string;
-  instructions?: string;
+  attachment?: string | undefined;
+  instructions?: string | undefined;
   posterId: string;
-  workerId?: string;
+  workerId?: string | undefined;
   status: TaskStatus;
   createdAt: string;
-  agreedAmount?: number;
+  agreedAmount?: number | undefined;
 }
 
 export interface Bid {
@@ -107,7 +107,7 @@ export interface Message {
   conversationId: string;
   senderId: string;
   text: string;
-  attachment?: string;
+  attachment?: string | undefined;
   createdAt: string;
   read: boolean;
 }
@@ -115,7 +115,7 @@ export interface Message {
 export interface Conversation {
   id: string;
   participants: [string, string];
-  taskId?: string;
+  taskId?: string | undefined;
   updatedAt: string;
 }
 
@@ -125,7 +125,7 @@ export interface Notification {
   title: string;
   body: string;
   type: string;
-  link?: string;
+  link?: string | undefined;
   read: boolean;
   createdAt: string;
 }
